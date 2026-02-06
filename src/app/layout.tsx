@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="ja">
       <body>
         <LayoutHeader />
-        <main className="min-h-screen bg-gray-50">{children}</main>
+        <main className="min-h-screen bg-gray-50 py-6">{children}</main>
         <LayoutFooter />
       </body>
     </html>

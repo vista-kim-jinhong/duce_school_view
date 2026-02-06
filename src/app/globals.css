@@ -34,11 +34,3 @@ body {
 
   line-height: 1.6;
 }
-
-/* =========================
-   共通レイアウト用
-========================= */
-
-.container-base {
-  @apply mx-auto max-w-7xl px-4;
-}
