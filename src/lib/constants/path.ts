@@ -8,7 +8,6 @@ export const PATH = {
 
   // 認証
   LOGIN: "/login",
-  LOGOUT: "/logout",
 
   // School View
   MAIN: "/main",
