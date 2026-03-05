@@ -30,6 +30,7 @@ export async function middleware(request: NextRequest) {
   }
 }
 
+// middlewareの適用範囲を指定（/main配下の全てのパス）
 export const config = {
   matcher: ["/main/:path*"],
 };
