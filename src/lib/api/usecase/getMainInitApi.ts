@@ -21,8 +21,8 @@ export interface MainInitData {
  * 取引先番号から使用建物一覧を取得
  */
 async function getBldgsByVendorNo(vendorNo: string): Promise<BldgRecord[]> {
-  const appId = process.env.KINTONE_BLD_USER_REL_APP_ID;
-  const apiToken = process.env.KINTONE_BLD_USER_REL_APP_TOKEN;
+  const appId = process.env.KINTONE_BLD_USER_REL_ID;
+  const apiToken = process.env.KINTONE_BLD_USER_REL_TOKEN;
 
   if (!appId)
     throw new Error(
