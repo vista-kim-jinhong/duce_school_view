@@ -8,7 +8,7 @@ import { logoutAction } from "./_actions/logoutAction";
 import { PATH } from "@/lib/constants/path";
 import { useState } from "react";
 import AppLoading from "@/components/ui/AppLoading/AppLoading";
-
+import Image from "next/image";
 /**
  * Client Layout Header Component
  * @description ヘッダーコンポーネント
@@ -39,9 +39,18 @@ export default function LayoutHeader() {
       <header className="sticky top-0 z-50 w-full bg-red-700/70 backdrop-blur-md border-b border-white/10 shadow-sm">
         <div className="h-14 flex items-center justify-between px-6">
           {/* 左：サービス名（常に表示） */}
-          <h1 className="text-lg font-semibold tracking-wide text-white">
-            DUCE School View
-          </h1>
+          <div className="flex items-center gap-6">
+            <Image
+              src="/duce_logo.png"
+              alt="Duce Logo"
+              height={32}
+              width={120}
+              className="object-contain"
+            />
+            <h1 className="text-lg font-semibold tracking-wide text-white">
+              School View
+            </h1>
+          </div>
 
           {/* 右：ログイン時のみ表示 */}
           {isLogin && (
