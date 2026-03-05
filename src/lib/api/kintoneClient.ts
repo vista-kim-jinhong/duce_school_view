@@ -6,7 +6,7 @@
  * =================================================
  */
 
-type QueryParams = Record<string, string | number | boolean>;
+type QueryParams = Record<string, string | number | boolean | string[]>;
 
 interface KintoneErrorResponse {
   message: string;
@@ -47,20 +47,26 @@ function getBaseUrl(): string {
 
 /**
  * リクエストURLを構築
- * @description キーはそのまま、値のみencodeURIComponentでエンコードする
- * @param endpoint - APIエンドポイント (例: /k/v1/records.json)
- * @param params - クエリパラメータ
- * @returns 完全なURL文字列
+ * @description 配列値は fields[0]=xxx&fields[1]=xxx 形式に展開する
  */
 function buildUrl(endpoint: string, params?: QueryParams): string {
   const base = `${getBaseUrl()}${endpoint}`;
   if (!params || Object.keys(params).length === 0) return base;
 
-  const query = Object.entries(params)
-    .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)
-    .join("&");
+  const parts: string[] = [];
 
-  return `${base}?${query}`;
+  for (const [k, v] of Object.entries(params)) {
+    if (Array.isArray(v)) {
+      // string[] → fields[0]=xxx&fields[1]=xxx
+      v.forEach((item, i) => {
+        parts.push(`${k}[${i}]=${encodeURIComponent(item)}`);
+      });
+    } else {
+      parts.push(`${k}=${encodeURIComponent(String(v))}`);
+    }
+  }
+
+  return `${base}?${parts.join("&")}`;
 }
 
 /**

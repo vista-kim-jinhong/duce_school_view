@@ -9,7 +9,7 @@
  * @description ログイン成功時にJWTに格納するユーザー情報
  */
 export interface SessionPayload {
-  /** 取引先番号（ユーザー識別子） */
+  /** 取引先番号 */
   clientId: string;
   /** ログインID */
   loginId: string;
