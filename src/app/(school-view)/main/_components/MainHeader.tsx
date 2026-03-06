@@ -43,7 +43,9 @@ export default function MainHeader({ schoolOrCompanyName }: MainHeaderProps) {
   return (
     <div className="mb-4 space-y-3">
       {/* 学校名 */}
-      <h3 className="text-xl font-bold text-gray-800">{schoolOrCompanyName}</h3>
+      <h3 className="text-2xl font-bold text-gray-800">
+        {schoolOrCompanyName}
+      </h3>
 
       {/* 外部リンクボタン */}
       <AppRow gap="sm" wrap>

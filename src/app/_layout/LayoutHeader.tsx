@@ -9,6 +9,7 @@ import { PATH } from "@/lib/constants/path";
 import { useState } from "react";
 import AppLoading from "@/components/ui/AppLoading/AppLoading";
 import Image from "next/image";
+
 /**
  * Client Layout Header Component
  * @description ヘッダーコンポーネント
@@ -39,7 +40,7 @@ export default function LayoutHeader() {
       <header className="sticky top-0 z-50 w-full bg-red-700/70 backdrop-blur-md border-b border-white/10 shadow-sm">
         <div className="h-14 flex items-center justify-between px-6">
           {/* 左：サービス名（常に表示） */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <Image
               src="/duce_logo.png"
               alt="Duce Logo"
@@ -48,13 +49,13 @@ export default function LayoutHeader() {
               className="object-contain"
             />
             <h1 className="text-lg font-semibold tracking-wide text-white">
-              School View
+              学校ビュー
             </h1>
           </div>
 
           {/* 右：ログイン時のみ表示 */}
           {isLogin && (
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4">
               <div className="flex flex-col items-end leading-tight">
                 <span className="text-[10px] uppercase tracking-wider text-white/60">
                   Current Space

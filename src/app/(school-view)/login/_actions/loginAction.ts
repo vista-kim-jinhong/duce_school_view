@@ -1,10 +1,5 @@
 "use server";
 
-/**
- * =================================================
- * ログイン Server Action
- * =================================================
- */
 import { authKintone } from "@/lib/api/usecase/authKintoneApi";
 import { setSessionCookie } from "@/lib/cookie/session";
 import { SessionPayload } from "@/lib/cookie/types";

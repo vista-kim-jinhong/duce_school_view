@@ -10,7 +10,9 @@ import {
   currentPageAtom,
   type SortMode,
 } from "../_store";
+import { FunnelIcon } from "@heroicons/react/24/outline";
 
+// ソートモードの定義とボタン表示用の設定
 const SORT_BUTTONS: {
   mode: SortMode;
   label: string;
@@ -64,8 +66,8 @@ export default function AnkenTableToolbar() {
       {/* 1行目: 案件一覧タイトル + 件数 + ソート・再読込ボタン */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex items-baseline gap-3">
-          <h4 className="text-lg font-bold text-gray-800">案件一覧</h4>
-          <span className="text-sm text-gray-500">全 {totalRows} 件</span>
+          <h4 className="text-xl font-bold text-gray-800">案件一覧</h4>
+          <span className="text-lg text-gray-500">全 {totalRows} 件</span>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -100,7 +102,7 @@ export default function AnkenTableToolbar() {
       <div className="flex justify-end">
         <div className="flex items-center gap-1">
           <label htmlFor="filter-input" className="text-sm text-gray-600 mr-1">
-            フィルタ
+            <FunnelIcon className="w-4 h-4 text-gray-500" />
           </label>
           <input
             id="filter-input"

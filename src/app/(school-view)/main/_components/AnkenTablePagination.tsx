@@ -42,7 +42,7 @@ export default function AnkenTablePagination() {
   const pageNumbers = getPageNumbers();
 
   return (
-    <div className="flex items-center justify-center gap-1 mt-4">
+    <div className="flex items-center justify-center gap-1 m-5">
       {/* 前へ */}
       <button
         onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
