@@ -15,6 +15,7 @@ import { openClientConfirmModalAtom } from "../../_store/clientConfirmModal";
  * @returns 列定義の配列
  */
 export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
+  // ログインユーザー情報
   const userInfo = useAtomValue(userInfoAtom);
   // メモモーダル
   const openMemoModal = useSetAtom(openMemoModalAtom);
@@ -30,6 +31,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
     {
       id: ANKEN_COLUMN.DETAIL,
       header: ANKEN_COLUMN_HEADER.DETAIL,
+      enableSorting: false,
       cell: ({ row }) => (
         <button
           onClick={() => {
@@ -48,6 +50,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       id: ANKEN_COLUMN.PROJECT_NUMBER,
       header: ANKEN_COLUMN_HEADER.PROJECT_NUMBER,
       accessorFn: (row) => row.プロジェクト番号.value,
+      enableSorting: true,
       cell: ({ getValue }) => (
         <span className="text-right block">{getValue<string>()}</span>
       ),
@@ -58,6 +61,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       id: ANKEN_COLUMN.RECEPTION_NUMBER,
       header: ANKEN_COLUMN_HEADER.RECEPTION_NUMBER,
       accessorFn: (row) => row.受付番号.value,
+      enableSorting: true,
       cell: ({ getValue }) => (
         <span className="text-right block whitespace-nowrap">
           {getValue<string>()}
@@ -70,6 +74,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       id: ANKEN_COLUMN.BUILDING_NAME,
       header: ANKEN_COLUMN_HEADER.BUILDING_NAME,
       accessorFn: (row) => row.問合せ建物名.value,
+      enableSorting: true,
     },
 
     // 工事案件名
@@ -77,6 +82,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       id: ANKEN_COLUMN.CONSTRUCTION_NAME,
       header: ANKEN_COLUMN_HEADER.CONSTRUCTION_NAME,
       accessorFn: (row) => row.工事案件名.value,
+      enableSorting: true,
     },
 
     // DUCE担当者
@@ -84,6 +90,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       id: ANKEN_COLUMN.DUCE_MANAGER,
       header: ANKEN_COLUMN_HEADER.DUCE_MANAGER,
       accessorFn: (row) => row.DUCE担当者.value,
+      enableSorting: true,
     },
 
     // ステータス
@@ -91,6 +98,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       id: ANKEN_COLUMN.STATUS,
       header: ANKEN_COLUMN_HEADER.STATUS,
       accessorFn: (row) => row.ステータス.value,
+      enableSorting: true,
       cell: ({ getValue }) => (
         <span className="block text-center">{getValue<string>()}</span>
       ),
@@ -100,6 +108,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
     {
       id: ANKEN_COLUMN.ESTIMATE,
       header: ANKEN_COLUMN_HEADER.ESTIMATE,
+      enableSorting: false,
       cell: ({ row }) => {
         const anken = row.original;
         const isOrderWaiting =
@@ -137,6 +146,8 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
     {
       id: ANKEN_COLUMN.COMPLETION_CHECK,
       header: ANKEN_COLUMN_HEADER.COMPLETION_CHECK,
+      accessorFn: (row) => row.クライアント確認日.value ?? "",
+      enableSorting: true,
       cell: ({ row }) => {
         const anken = row.original;
 
@@ -173,6 +184,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       id: ANKEN_COLUMN.INSPECTION_DATE,
       header: ANKEN_COLUMN_HEADER.INSPECTION_DATE,
       accessorFn: (row) => row.検収日.value ?? "",
+      enableSorting: true,
       cell: ({ getValue }) => (
         <span className="block text-center text-sm">{getValue<string>()}</span>
       ),
@@ -182,6 +194,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
     {
       id: ANKEN_COLUMN.INQUIRY,
       header: ANKEN_COLUMN_HEADER.INQUIRY,
+      enableSorting: false,
       cell: ({ row }) => (
         <button
           onClick={() => {
@@ -203,12 +216,12 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
     {
       id: ANKEN_COLUMN.MEMO,
       header: ANKEN_COLUMN_HEADER.MEMO,
+      enableSorting: false,
       cell: ({ row }) => {
         const anken = row.original;
         const hasMemo = !!anken.学内用メモ.value;
 
         const handleClick = () => {
-          // loginId に一致するメモ行を取得
           const myNote = anken.個別学内用メモ.value.find(
             (note) => note.value.メモ識別用ログインID.value === loginId,
           );
