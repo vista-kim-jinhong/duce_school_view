@@ -2,14 +2,22 @@
 
 import { type ColumnDef } from "@tanstack/react-table";
 import { EnvelopeIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
+import { useAtomValue, useSetAtom } from "jotai";
 import type { EnrichedAnkenRecord } from "@/lib/api/types/kintone";
 import { ANKEN_COLUMN, ANKEN_COLUMN_HEADER } from "./anken-column-def";
+import { userInfoAtom } from "@/app/store/globalAtoms";
+import { openMemoModalAtom } from "../../_store/memoModal";
 
 /**
  * 案件テーブルの列定義を返すカスタムフック
  * @returns 列定義の配列
  */
 export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
+  const userInfo = useAtomValue(userInfoAtom);
+  const openMemoModal = useSetAtom(openMemoModalAtom);
+
+  const loginId = userInfo?.loginId ?? "";
+
   return [
     // 詳細ボタン
     {
@@ -186,13 +194,26 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       id: ANKEN_COLUMN.MEMO,
       header: ANKEN_COLUMN_HEADER.MEMO,
       cell: ({ row }) => {
-        const hasMemo = !!row.original.学内用メモ.value;
+        const anken = row.original;
+        const hasMemo = !!anken.学内用メモ.value;
+
+        const handleClick = () => {
+          // loginId に一致するメモ行を取得
+          const myNote = anken.個別学内用メモ.value.find(
+            (note) => note.value.メモ識別用ログインID.value === loginId,
+          );
+
+          openMemoModal({
+            recordId: anken.$id.value,
+            uketsukeNo: anken.受付番号.value,
+            currentMemo: myNote?.value.ログイン別メモ.value ?? "",
+            updatedAt: myNote?.value.ログイン別メモ更新日時.value ?? "",
+          });
+        };
+
         return (
           <button
-            onClick={() => {
-              // TODO: メモモーダルを開く
-              console.log("メモ:", row.original.$id.value);
-            }}
+            onClick={handleClick}
             className="flex items-center justify-center w-full text-orange-400 hover:text-orange-600 transition-colors"
           >
             <PencilSquareIcon
