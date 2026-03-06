@@ -60,7 +60,7 @@ export default function LayoutHeader() {
                   Current Space
                 </span>
                 <span className="text-sm font-medium text-white">
-                  {userInfo?.schoolOrCompanyName}様
+                  {userInfo?.schoolOrCompanyName}
                 </span>
               </div>
 
