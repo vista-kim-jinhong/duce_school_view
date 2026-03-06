@@ -11,7 +11,7 @@ import { useAnkenColumns } from "./table/useAnkenColumns";
 import type { EnrichedAnkenRecord } from "@/lib/api/types/kintone";
 
 function getRowClassName(row: EnrichedAnkenRecord): string {
-  if (row.ステータス.value === "【検収済】") return "bg-green-50";
+  if (row.ステータス.value === "【検収済】") return "bg-green-100";
   if (row.ユーザー_緊急度.value === "緊急") return "bg-red-100";
   return "";
 }

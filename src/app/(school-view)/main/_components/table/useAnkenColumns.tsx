@@ -8,6 +8,7 @@ import { ANKEN_COLUMN, ANKEN_COLUMN_HEADER } from "./anken-column-def";
 import { userInfoAtom } from "@/app/store/globalAtoms";
 import { openMemoModalAtom } from "../../_store/memoModal";
 import { openInquiryModalAtom } from "../../_store/inquiryModal";
+import { openClientConfirmModalAtom } from "../../_store/clientConfirmModal";
 
 /**
  * 案件テーブルの列定義を返すカスタムフック
@@ -19,6 +20,8 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
   const openMemoModal = useSetAtom(openMemoModalAtom);
   // お問い合わせモーダル
   const openInquiryModal = useSetAtom(openInquiryModalAtom);
+  // 完了確認モーダル
+  const openClientConfirmModal = useSetAtom(openClientConfirmModalAtom);
 
   const loginId = userInfo?.loginId ?? "";
 
@@ -149,11 +152,10 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
           return (
             <button
               onClick={() => {
-                // TODO: 完了確認処理を呼び出す
-                console.log(
-                  "完了確認:",
-                  anken.対応明細.map((a) => a.$id.value),
-                );
+                openClientConfirmModal({
+                  ankenId: anken.$id.value,
+                  actionItems: anken.対応明細,
+                });
               }}
               className="rounded px-3 py-1 text-sm bg-green-500 hover:bg-green-600 text-white transition-colors whitespace-nowrap"
             >
