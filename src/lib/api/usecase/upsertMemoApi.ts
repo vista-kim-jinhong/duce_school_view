@@ -4,43 +4,16 @@ import type {
   KintoneRecordResponse,
   SchoolNoteTableRow,
 } from "@/lib/api/types/kintone";
+import { getNowJST } from "@/lib/utils/date";
 
 /**
- * =================================================
  * 学内用メモ保存 API
- * @description ログインユーザーの메モを 個別学内用メモ テーブルに upsert する
+ * @description ログインユーザーのメモを 個別学内用メモ テーブルに upsert する
  *              - メモ識別用ログインID が一致する行を更新
  *              - 一致しない場合は新規行を追加
  *              - 最初の行が空白の場合は上書き (Kintone テーブルの初期状態対応)
- * =================================================
- */
-
-/**
- * 現在日時を Kintone 用 ISO 文字列で返す (Asia/Tokyo)
- * 例: "2024-03-15T14:30:00+09:00"
- */
-function getNowJST(): string {
-  const d = new Date();
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return (
-    d.getFullYear() +
-    "-" +
-    pad(d.getMonth() + 1) +
-    "-" +
-    pad(d.getDate()) +
-    "T" +
-    pad(d.getHours()) +
-    ":" +
-    pad(d.getMinutes()) +
-    ":" +
-    pad(d.getSeconds()) +
-    "+09:00"
-  );
-}
-
-/**
- * Kintone テーブル行を upsert する
- * @description PHP版 saveSchoolNote のロジックを移植
+ *              - Kintone テーブル行を upsert する
+ *              - Laravel版 saveSchoolNote のロジックを移植
  */
 function upsertTableRows(
   existingRows: SchoolNoteTableRow[],
@@ -77,10 +50,6 @@ function upsertTableRows(
   rows.push(newRowValue);
   return rows;
 }
-
-// -------------------------------------------------
-// 公開 API
-// -------------------------------------------------
 
 export interface UpsertMemoParams {
   /** 案件レコードID */
