@@ -3,13 +3,14 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { EnvelopeIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import type { EnrichedAnkenRecord } from "@/lib/api/types/kintone";
+import { ANKEN_COLUMN, ANKEN_COLUMN_HEADER } from "./anken-column-def";
 
 export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
   return [
     // 詳細ボタン
     {
-      id: "詳細",
-      header: "詳細",
+      id: ANKEN_COLUMN.DETAIL,
+      header: ANKEN_COLUMN_HEADER.DETAIL,
       cell: ({ row }) => (
         <button
           onClick={() => {
@@ -25,8 +26,8 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
 
     // P番
     {
-      id: "プロジェクト番号",
-      header: "P番",
+      id: ANKEN_COLUMN.PROJECT_NUMBER,
+      header: ANKEN_COLUMN_HEADER.PROJECT_NUMBER,
       accessorFn: (row) => row.プロジェクト番号.value,
       cell: ({ getValue }) => (
         <span className="text-right block">{getValue<string>()}</span>
@@ -35,39 +36,41 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
 
     // 受付番号
     {
-      id: "受付番号",
-      header: "受付番号",
+      id: ANKEN_COLUMN.RECEPTION_NUMBER,
+      header: ANKEN_COLUMN_HEADER.RECEPTION_NUMBER,
       accessorFn: (row) => row.受付番号.value,
       cell: ({ getValue }) => (
-        <span className="text-right block">{getValue<string>()}</span>
+        <span className="text-right block whitespace-nowrap">
+          {getValue<string>()}
+        </span>
       ),
     },
 
     // 対象の建物名
     {
-      id: "問合せ建物名",
-      header: "対象の建物名",
+      id: ANKEN_COLUMN.BUILDING_NAME,
+      header: ANKEN_COLUMN_HEADER.BUILDING_NAME,
       accessorFn: (row) => row.問合せ建物名.value,
     },
 
     // 工事案件名
     {
-      id: "工事案件名",
-      header: "工事案件名",
+      id: ANKEN_COLUMN.CONSTRUCTION_NAME,
+      header: ANKEN_COLUMN_HEADER.CONSTRUCTION_NAME,
       accessorFn: (row) => row.工事案件名.value,
     },
 
     // DUCE担当者
     {
-      id: "DUCE担当者",
-      header: "DUCE担当者",
+      id: ANKEN_COLUMN.DUCE_MANAGER,
+      header: ANKEN_COLUMN_HEADER.DUCE_MANAGER,
       accessorFn: (row) => row.DUCE担当者.value,
     },
 
     // ステータス
     {
-      id: "ステータス",
-      header: "ステータス",
+      id: ANKEN_COLUMN.STATUS,
+      header: ANKEN_COLUMN_HEADER.STATUS,
       accessorFn: (row) => row.ステータス.value,
       cell: ({ getValue }) => (
         <span className="block text-center">{getValue<string>()}</span>
@@ -76,8 +79,8 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
 
     // 見積 (発注待ちボタン or 受注日)
     {
-      id: "見積",
-      header: "見積",
+      id: ANKEN_COLUMN.ESTIMATE,
+      header: ANKEN_COLUMN_HEADER.ESTIMATE,
       cell: ({ row }) => {
         const anken = row.original;
         const isOrderWaiting =
@@ -92,7 +95,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
                 // TODO: 発注モーダルを開く
                 console.log("発注:", anken.$id.value);
               }}
-              className="rounded px-3 py-1 text-sm bg-red-500 hover:bg-red-600 text-white transition-colors"
+              className="rounded px-3 py-1 text-sm bg-red-500 hover:bg-red-600 text-white transition-colors whitespace-nowrap"
             >
               発注待ち
             </button>
@@ -113,8 +116,8 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
 
     // 完了確認 (完了を確認ボタン or クライアント確認日)
     {
-      id: "完了確認",
-      header: "完了確認",
+      id: ANKEN_COLUMN.COMPLETION_CHECK,
+      header: ANKEN_COLUMN_HEADER.COMPLETION_CHECK,
       cell: ({ row }) => {
         const anken = row.original;
 
@@ -136,7 +139,7 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
                   anken.対応明細.map((a) => a.$id.value),
                 );
               }}
-              className="rounded px-3 py-1 text-sm bg-green-500 hover:bg-green-600 text-white transition-colors"
+              className="rounded px-3 py-1 text-sm bg-green-500 hover:bg-green-600 text-white transition-colors whitespace-nowrap"
             >
               完了を確認
             </button>
@@ -149,8 +152,8 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
 
     // 検収日
     {
-      id: "検収日",
-      header: "検収日(終了日)",
+      id: ANKEN_COLUMN.INSPECTION_DATE,
+      header: ANKEN_COLUMN_HEADER.INSPECTION_DATE,
       accessorFn: (row) => row.検収日.value ?? "",
       cell: ({ getValue }) => (
         <span className="block text-center text-sm">{getValue<string>()}</span>
@@ -159,8 +162,8 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
 
     // お問合せ
     {
-      id: "お問合せ",
-      header: "お問合せ",
+      id: ANKEN_COLUMN.INQUIRY,
+      header: ANKEN_COLUMN_HEADER.INQUIRY,
       cell: ({ row }) => (
         <button
           onClick={() => {
@@ -176,8 +179,8 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
 
     // お客様メモ
     {
-      id: "メモ",
-      header: "お客様メモ",
+      id: ANKEN_COLUMN.MEMO,
+      header: ANKEN_COLUMN_HEADER.MEMO,
       cell: ({ row }) => {
         const hasMemo = !!row.original.学内用メモ.value;
         return (

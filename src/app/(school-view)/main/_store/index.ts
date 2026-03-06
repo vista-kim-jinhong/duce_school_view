@@ -58,18 +58,21 @@ function calcPriority(anken: EnrichedAnkenRecord, mode: SortMode): number {
     !anken.クライアント確認日.value && anken.isAllAccepted;
 
   switch (mode) {
+    // デフォルト: 発注待ちと完了確認待ちを優先。両方ならさらに優先度高く。
     case SORT_MODE.DEFAULT:
       if (isOrderWaiting && isConfirmWaiting) return SORT_PRIORITY.HIGHEST;
       if (isConfirmWaiting) return SORT_PRIORITY.HIGH;
       if (isOrderWaiting) return SORT_PRIORITY.MIDDLE;
       return SORT_PRIORITY.NORMAL;
 
+    // 発注待ち優先: 発注待ちを最優先、次に完了確認待ち。発注待ちでない案件はすべて同列。
     case SORT_MODE.CONFIRM:
       if (isOrderWaiting && isConfirmWaiting) return SORT_PRIORITY.HIGHEST;
       if (isConfirmWaiting) return SORT_PRIORITY.HIGH;
       if (anken.isAllAccepted) return SORT_PRIORITY.MIDDLE;
       return SORT_PRIORITY.NORMAL;
 
+    // 発注待ち優先: 発注待ちを最優先、次に完了確認待ち。発注待ちでない案件はすべて同列。
     case SORT_MODE.ORDER:
       if (isOrderWaiting && isConfirmWaiting) return SORT_PRIORITY.HIGHEST;
       if (isOrderWaiting) return SORT_PRIORITY.HIGH;
