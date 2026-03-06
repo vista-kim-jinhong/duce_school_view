@@ -5,6 +5,10 @@ import { EnvelopeIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import type { EnrichedAnkenRecord } from "@/lib/api/types/kintone";
 import { ANKEN_COLUMN, ANKEN_COLUMN_HEADER } from "./anken-column-def";
 
+/**
+ * 案件テーブルの列定義を返すカスタムフック
+ * @returns 列定義の配列
+ */
 export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
   return [
     // 詳細ボタン
