@@ -9,6 +9,7 @@ import MainHeader from "./MainHeader";
 import AnkenTableToolbar from "./AnkenTableToolbar";
 import AnkenTable from "./AnkenTable";
 import AnkenTablePagination from "./AnkenTablePagination";
+import MemoModal from "./modal/MemoModal";
 
 interface ParentViewComponentProps {
   ankenList: AnkenRecord[];
@@ -52,6 +53,9 @@ export default function ParentViewComponent({
 
       {/* 案件一覧テーブル */}
       <AnkenTable />
+
+      {/* 学内用メモモーダル */}
+      <MemoModal />
 
       {/* ページネーション */}
       <AnkenTablePagination />
