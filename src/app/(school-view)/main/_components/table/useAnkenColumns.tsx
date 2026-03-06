@@ -7,6 +7,7 @@ import type { EnrichedAnkenRecord } from "@/lib/api/types/kintone";
 import { ANKEN_COLUMN, ANKEN_COLUMN_HEADER } from "./anken-column-def";
 import { userInfoAtom } from "@/app/store/globalAtoms";
 import { openMemoModalAtom } from "../../_store/memoModal";
+import { openInquiryModalAtom } from "../../_store/inquiryModal";
 
 /**
  * 案件テーブルの列定義を返すカスタムフック
@@ -14,7 +15,10 @@ import { openMemoModalAtom } from "../../_store/memoModal";
  */
 export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
   const userInfo = useAtomValue(userInfoAtom);
+  // メモモーダル
   const openMemoModal = useSetAtom(openMemoModalAtom);
+  // お問い合わせモーダル
+  const openInquiryModal = useSetAtom(openInquiryModalAtom);
 
   const loginId = userInfo?.loginId ?? "";
 
@@ -179,8 +183,12 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       cell: ({ row }) => (
         <button
           onClick={() => {
-            // TODO: お問合せモーダルを開く
-            console.log("お問合せ:", row.original.$id.value);
+            openInquiryModal({
+              ankenId: row.original.$id.value,
+              type: "inquiry",
+              actionItems: row.original.対応明細,
+              schoolOrCompanyName: userInfo?.schoolOrCompanyName ?? "",
+            });
           }}
           className="flex items-center justify-center w-full text-blue-500 hover:text-blue-700 transition-colors"
         >

@@ -34,6 +34,6 @@ export const ANKEN_COLUMN_HEADER: Record<AnkenColumnId, string> = {
   ESTIMATE: "見積",
   COMPLETION_CHECK: "完了確認",
   INSPECTION_DATE: "検収日(終了日)",
-  INQUIRY: "お問合せ",
+  INQUIRY: "お問い合わせ",
   MEMO: "お客様メモ",
 };
