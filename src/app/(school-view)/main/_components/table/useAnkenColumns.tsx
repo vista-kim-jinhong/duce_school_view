@@ -9,6 +9,8 @@ import { userInfoAtom } from "@/app/store/globalAtoms";
 import { openMemoModalAtom } from "../../_store/memoModal";
 import { openInquiryModalAtom } from "../../_store/inquiryModal";
 import { openClientConfirmModalAtom } from "../../_store/clientConfirmModal";
+import { openDetailModalAtom } from "../../_store/detailModal";
+import { selectedAnkenIdAtom } from "../../_store";
 
 /**
  * 案件テーブルの列定義を返すカスタムフック
@@ -17,6 +19,10 @@ import { openClientConfirmModalAtom } from "../../_store/clientConfirmModal";
 export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
   // ログインユーザー情報
   const userInfo = useAtomValue(userInfoAtom);
+  // 詳細モーダル
+  const openDetailModal = useSetAtom(openDetailModalAtom);
+  // 案件選択ID Atom
+  const setSelectedAnkenId = useSetAtom(selectedAnkenIdAtom);
   // メモモーダル
   const openMemoModal = useSetAtom(openMemoModalAtom);
   // お問い合わせモーダル
@@ -35,8 +41,9 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
       cell: ({ row }) => (
         <button
           onClick={() => {
-            // TODO: 詳細モーダルを開く
-            console.log("詳細:", row.original.$id.value);
+            // 詳細モーダルを開く
+            setSelectedAnkenId(row.original.$id.value);
+            openDetailModal();
           }}
           className="rounded px-3 py-1 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 transition-colors"
         >
