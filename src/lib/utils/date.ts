@@ -42,3 +42,12 @@ export function formatDateTime(isoStr: string): string {
     pad(d.getMinutes())
   );
 }
+
+/**
+ * 今日の日付を YYYY-MM-DD 形式で返す (Asia/Tokyo)
+ */
+export function getTodayJST(): string {
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}

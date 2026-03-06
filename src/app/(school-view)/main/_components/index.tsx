@@ -11,6 +11,7 @@ import AnkenTable from "./AnkenTable";
 import AnkenTablePagination from "./AnkenTablePagination";
 import MemoModal from "./modal/MemoModal";
 import InquiryModal from "./modal/InquiryModal";
+import ClientConfirmModal from "./modal/ClientConfirmModal";
 
 interface ParentViewComponentProps {
   ankenList: AnkenRecord[];
@@ -54,6 +55,9 @@ export default function ParentViewComponent({
 
       {/* 案件一覧テーブル */}
       <AnkenTable />
+
+      {/* 完了を確認モーダル */}
+      <ClientConfirmModal />
 
       {/* お問い合わせモーダル */}
       <InquiryModal />
