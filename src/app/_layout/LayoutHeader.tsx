@@ -3,10 +3,9 @@
 import { useAtom, useAtomValue } from "jotai";
 import { useRouter } from "next/navigation";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
-import { isLoginAtom, sessionAtom } from "../store/globalAtoms";
+import { isLoginAtom, userInfoAtom, isLoadingAtom } from "../store/globalAtoms";
 import { logoutAction } from "./_actions/logoutAction";
 import { PATH } from "@/lib/constants/path";
-import { useState } from "react";
 import AppLoading from "@/components/ui/AppLoading/AppLoading";
 import Image from "next/image";
 
@@ -17,24 +16,24 @@ import Image from "next/image";
  */
 export default function LayoutHeader() {
   const router = useRouter();
-  const [, setSession] = useAtom(sessionAtom);
+  const [, setUserInfo] = useAtom(userInfoAtom);
   const isLogin = useAtomValue(isLoginAtom);
-  const session = useAtomValue(sessionAtom);
-  const [loading, setLoading] = useState(false);
+  const userInfo = useAtomValue(userInfoAtom);
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
 
   // ログアウト処理
+  // ログアウトアクションを呼び出し、ユーザー情報をクリアしてログインページへリダイレクト
   const handleLogout = async () => {
-    setLoading(true);
+    setIsLoading(true);
     await logoutAction();
-    setSession(null);
+    setUserInfo(null);
     router.push(PATH.LOGIN);
-    setLoading(false);
   };
 
   return (
     <>
       {/* ローディング表示 */}
-      {loading && <AppLoading variant="overlay" label="ログアウト中..." />}
+      {isLoading && <AppLoading variant="overlay" label="ログアウト中..." />}
 
       {/* ヘッダー */}
       <header className="sticky top-0 z-50 w-full bg-red-700/70 backdrop-blur-md border-b border-white/10 shadow-sm">
@@ -61,7 +60,7 @@ export default function LayoutHeader() {
                   Current Space
                 </span>
                 <span className="text-sm font-medium text-white">
-                  {session?.schoolOrCompanyName}様
+                  {userInfo?.schoolOrCompanyName}様
                 </span>
               </div>
 

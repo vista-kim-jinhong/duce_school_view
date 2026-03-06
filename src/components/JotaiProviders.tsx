@@ -3,7 +3,7 @@
 import { createStore, Provider } from "jotai";
 import { useMemo } from "react";
 import type { SessionPayload } from "@/lib/cookie/types";
-import { sessionAtom } from "@/app/store/globalAtoms";
+import { userInfoAtom } from "@/app/store/globalAtoms";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ export default function JotaiProviders({
 }: ProvidersProps) {
   const store = useMemo(() => {
     const s = createStore();
-    s.set(sessionAtom, initialSession);
+    s.set(userInfoAtom, initialSession);
     return s;
   }, [initialSession]);
 

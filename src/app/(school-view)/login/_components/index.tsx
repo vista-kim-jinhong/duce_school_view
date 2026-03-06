@@ -14,10 +14,11 @@ import AppButton from "@/components/ui/AppButton/AppButton";
 import AppRow from "@/components/ui/AppRow/AppRow";
 import { loginAction } from "../_actions/loginAction";
 import { PATH } from "@/lib/constants/path";
-import { sessionAtom } from "@/app/store/globalAtoms";
+import { userInfoAtom } from "@/app/store/globalAtoms";
 import { useSetAtom } from "jotai";
 import styles from "./index.module.css";
 import AppLoading from "@/components/ui/AppLoading/AppLoading";
+import { useLoginValidation } from "../_hooks";
 
 /**
  * ログインページ - 親コンポーネント
@@ -27,67 +28,47 @@ export default function ParentViewComponent() {
 
   const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
-  const [loginIdError, setLoginIdError] = useState<string | null>(null);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // =================================================
-  // バリデーション
-  // =================================================
-
-  const handleLoginIdBlur = () => {
-    if (!loginId.trim()) {
-      setLoginIdError("ログインIDを入力してください");
-    } else {
-      setLoginIdError(null);
-    }
-  };
-
-  const handlePasswordBlur = () => {
-    if (!password.trim()) {
-      setPasswordError("パスワードを入力してください");
-    } else {
-      setPasswordError(null);
-    }
-  };
-
-  const isFormValid = loginId.trim() !== "" && password.trim() !== "";
-
-  // =================================================
-  // ログイン処理
-  // =================================================
+  // バリデーションフック
+  const {
+    loginIdError,
+    passwordError,
+    isFormValid,
+    handleLoginIdBlur,
+    handlePasswordBlur,
+    validateAll,
+  } = useLoginValidation(loginId, password);
 
   // グローバルAtomのセッション情報セット
-  const setSession = useSetAtom(sessionAtom);
+  const setUserInfo = useSetAtom(userInfoAtom);
 
+  // ログインボタンクリック時の処理
   const handleLogin = async () => {
     if (!isFormValid) {
-      if (!loginId.trim()) setLoginIdError("ログインIDを入力してください");
-      if (!password.trim()) setPasswordError("パスワードを入力してください");
+      validateAll();
       return;
     }
 
+    // エラーリセット＆ローディング開始
     setAuthError(null);
     setLoading(true);
 
     try {
-      // ログインAPI呼び出し
       const result = await loginAction(loginId, password);
-      // 認証失敗
+      // ログイン成功時はセッションをセットしてメイン画面へ遷移。失敗時はエラーメッセージを表示。
       if (result.success) {
-        // セッション情報をグローバルAtomにセット
-        setSession(result.session);
-
-        // 認証成功 - メインページへ遷移
+        setUserInfo(result.session);
         router.push(PATH.MAIN);
+        return; // ローディングはそのまま維持
       }
 
-      // 失敗
       setAuthError(result.error);
-      return;
-    } finally {
-      setLoading(false);
+      setLoading(false); // 失敗時のみ解除
+    } catch (err) {
+      setLoading(false); // エラー時も解除
+      console.error("Login error:", err);
     }
   };
 
@@ -103,7 +84,7 @@ export default function ParentViewComponent() {
         {/* Header */}
         <div className="px-6 pt-6 pb-4 text-center">
           <h1 className="text-xl font-semibold text-gray-900">
-            DUCE School View
+            DUCE 学校ビュー
           </h1>
           <p className="mt-1 text-sm text-gray-500">ログイン</p>
         </div>
