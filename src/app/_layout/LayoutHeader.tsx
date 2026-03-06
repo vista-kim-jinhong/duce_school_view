@@ -9,6 +9,7 @@ import { PATH } from "@/lib/constants/path";
 import { useState } from "react";
 import AppLoading from "@/components/ui/AppLoading/AppLoading";
 import Image from "next/image";
+
 /**
  * Client Layout Header Component
  * @description ヘッダーコンポーネント
