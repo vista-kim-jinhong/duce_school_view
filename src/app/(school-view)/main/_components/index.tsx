@@ -3,12 +3,22 @@
 import { useEffect } from "react";
 import { useSetAtom, useAtomValue } from "jotai";
 import type { ActionRecord, AnkenRecord } from "@/lib/api/types/kintone";
-import { actionItemsAtom, ankenListAtom, isLoadingAtom } from "../_store";
+import {
+  actionItemsAtom,
+  ankenListAtom,
+  isLoadingAtom,
+  selectedAnkenIdAtom,
+} from "../_store";
 import AppLoading from "@/components/ui/AppLoading/AppLoading";
 import MainHeader from "./MainHeader";
 import AnkenTableToolbar from "./AnkenTableToolbar";
 import AnkenTable from "./AnkenTable";
 import AnkenTablePagination from "./AnkenTablePagination";
+import MemoModal from "./modal/MemoModal";
+import InquiryModal from "./modal/InquiryModal";
+import ClientConfirmModal from "./modal/ClientConfirmModal";
+import DetailModal from "./modal/DetailModal";
+import OrderModal from "./modal/OrderModal";
 
 interface ParentViewComponentProps {
   ankenList: AnkenRecord[];
@@ -31,6 +41,7 @@ export default function ParentViewComponent({
   const setActionItems = useSetAtom(actionItemsAtom);
   const setIsLoading = useSetAtom(isLoadingAtom);
   const isLoading = useAtomValue(isLoadingAtom);
+  const selectedAnkenId = useAtomValue(selectedAnkenIdAtom);
 
   // サーバーから受け取ったデータをatomに格納
   useEffect(() => {
@@ -52,6 +63,21 @@ export default function ParentViewComponent({
 
       {/* 案件一覧テーブル */}
       <AnkenTable />
+
+      {/* 詳細モーダル */}
+      <DetailModal ankenId={selectedAnkenId} />
+
+      {/* 完了を確認モーダル */}
+      <ClientConfirmModal />
+
+      {/* 発注確定モーダル */}
+      <OrderModal />
+
+      {/* お問い合わせモーダル */}
+      <InquiryModal />
+
+      {/* 学内用メモモーダル */}
+      <MemoModal />
 
       {/* ページネーション */}
       <AnkenTablePagination />

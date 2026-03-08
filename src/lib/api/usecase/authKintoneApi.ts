@@ -1,9 +1,3 @@
-/**
- * =================================================
- * Kintone 認証API
- * @description ログインID・パスワードでKintoneレコードを照合し認証する
- * =================================================
- */
 import { kintoneGet } from "../kintoneClient";
 import type { SessionPayload } from "@/lib/cookie/types";
 

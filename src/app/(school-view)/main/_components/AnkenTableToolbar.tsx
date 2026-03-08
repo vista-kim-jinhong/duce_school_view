@@ -10,7 +10,11 @@ import {
   currentPageAtom,
   type SortMode,
 } from "../_store";
-import { FunnelIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowPathIcon,
+  FunnelIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/outline";
 
 // ソートモードの定義とボタン表示用の設定
 const SORT_BUTTONS: {
@@ -91,9 +95,10 @@ export default function AnkenTableToolbar() {
 
           <button
             onClick={handleReload}
-            className="rounded px-3 py-1.5 text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
+            className="flex items-center rounded gap-1 px-3 py-1.5 text-sm font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
           >
-            ↺ 再読込
+            <ArrowPathIcon className="h-4 w-4" />
+            再読込
           </button>
         </div>
       </div>
@@ -121,8 +126,9 @@ export default function AnkenTableToolbar() {
               setCurrentPage(1);
             }}
             disabled={!filterText}
-            className="rounded px-2 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-1 rounded px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
+            <XCircleIcon className="h-4 w-4" />
             クリア
           </button>
         </div>

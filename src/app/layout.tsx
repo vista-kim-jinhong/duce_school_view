@@ -8,6 +8,9 @@ import JotaiProviders from "@/components/JotaiProviders";
 export const metadata = {
   title: "DUCE School View",
   description: "DUCE 学校向け管理画面",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default async function RootLayout({

@@ -10,10 +10,6 @@ export interface LoginActionResult {
   session: SessionPayload | null;
 }
 
-// =================================================
-// Server Action
-// =================================================
-
 /**
  * ログイン処理
  * @param loginId - ログインID
