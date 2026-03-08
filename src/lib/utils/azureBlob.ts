@@ -163,6 +163,7 @@ export async function getSasUrl(blobName: string): Promise<string> {
   );
 
   // SAS有効期限: 1時間
+  // TODO::確認必要
   const expiresOn = new Date();
   expiresOn.setHours(expiresOn.getHours() + 1);
 
