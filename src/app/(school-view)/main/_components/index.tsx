@@ -63,7 +63,7 @@ export default function ParentViewComponent({
       {/* 案件一覧テーブル */}
       <AnkenTable />
 
-      {/*  */}
+      {/* 詳細モーダル */}
       <DetailModal ankenId={selectedAnkenId} />
 
       {/* 完了を確認モーダル */}
