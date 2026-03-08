@@ -11,6 +11,7 @@ import { openInquiryModalAtom } from "../../_store/inquiryModal";
 import { openClientConfirmModalAtom } from "../../_store/clientConfirmModal";
 import { openDetailModalAtom } from "../../_store/detailModal";
 import { selectedAnkenIdAtom } from "../../_store";
+import { openOrderModalAtom } from "../../_store/orderModal";
 
 /**
  * 案件テーブルの列定義を返すカスタムフック
@@ -23,6 +24,8 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
   const openDetailModal = useSetAtom(openDetailModalAtom);
   // 案件選択ID Atom
   const setSelectedAnkenId = useSetAtom(selectedAnkenIdAtom);
+  // 発注確定モーダル
+  const openOrderModal = useSetAtom(openOrderModalAtom);
   // メモモーダル
   const openMemoModal = useSetAtom(openMemoModalAtom);
   // お問い合わせモーダル
@@ -127,8 +130,12 @@ export function useAnkenColumns(): ColumnDef<EnrichedAnkenRecord, string>[] {
           return (
             <button
               onClick={() => {
-                // TODO: 発注モーダルを開く
-                console.log("発注:", anken.$id.value);
+                openOrderModal({
+                  ankenId: anken.$id.value,
+                  uketsukeNo: anken.受付番号.value,
+                  messageFromDuce: anken.DUCEからのメッセージ.value,
+                  anken: anken,
+                });
               }}
               className="rounded px-3 py-1 text-sm bg-red-500 hover:bg-red-600 text-white transition-colors whitespace-nowrap"
             >
