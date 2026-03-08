@@ -27,6 +27,7 @@ import AppButton from "@/components/ui/AppButton/AppButton";
 import AppLoading from "@/components/ui/AppLoading/AppLoading";
 import type { GetFileSasUrlResult } from "@/lib/api/usecase/getFileApi";
 import Image from "next/image";
+import { openOrderModalAtom } from "../../_store/orderModal";
 
 export interface DetailModalProps {
   /** 詳細を表示する案件ID (外部から渡す) */
@@ -48,9 +49,15 @@ export default function DetailModal({ ankenId }: DetailModalProps) {
   const closeModal = useSetAtom(closeDetailModalAtom);
   const setData = useSetAtom(setDetailModalDataAtom);
   const setError = useSetAtom(setDetailModalErrorAtom);
+
+  // メモモーダル
   const openMemoModal = useSetAtom(openMemoModalAtom);
+  // お問い合わせモーダル
   const openInquiryModal = useSetAtom(openInquiryModalAtom);
+  // 完了確認モーダル
   const openClientConfirmModal = useSetAtom(openClientConfirmModalAtom);
+  // 発注確定モーダル
+  const openOrderModal = useSetAtom(openOrderModalAtom);
 
   const loginId = userInfo?.loginId ?? "";
 
@@ -375,9 +382,16 @@ export default function DetailModal({ ankenId }: DetailModalProps) {
                   <AppButton
                     variant="danger"
                     size="md"
-                    onClick={() =>
-                      console.log("発注:", modalData.anken.$id.value)
-                    }
+                    onClick={() => {
+                      closeModal();
+                      openOrderModal({
+                        ankenId: modalData.anken.$id.value,
+                        uketsukeNo: modalData.anken.受付番号.value,
+                        messageFromDuce:
+                          modalData.anken.DUCEからのメッセージ.value,
+                        anken: modalData.anken,
+                      });
+                    }}
                   >
                     発注手続きへ
                   </AppButton>

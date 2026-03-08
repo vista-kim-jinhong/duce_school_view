@@ -130,7 +130,7 @@ export default function InquiryModal() {
             : "opacity-0 scale-95 pointer-events-none",
         ].join(" ")}
       >
-        <div className="w-full max-w-xl rounded-xl bg-white shadow-2xl flex flex-col max-h-[90vh]">
+        <div className="w-full max-w-3xl rounded-xl bg-white shadow-2xl flex flex-col max-h-[90vh]">
           {/* ヘッダー */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 shrink-0">
             <h2

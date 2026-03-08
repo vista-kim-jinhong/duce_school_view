@@ -18,6 +18,7 @@ import MemoModal from "./modal/MemoModal";
 import InquiryModal from "./modal/InquiryModal";
 import ClientConfirmModal from "./modal/ClientConfirmModal";
 import DetailModal from "./modal/DetailModal";
+import OrderModal from "./modal/OrderModal";
 
 interface ParentViewComponentProps {
   ankenList: AnkenRecord[];
@@ -68,6 +69,9 @@ export default function ParentViewComponent({
 
       {/* 完了を確認モーダル */}
       <ClientConfirmModal />
+
+      {/* 発注確定モーダル */}
+      <OrderModal />
 
       {/* お問い合わせモーダル */}
       <InquiryModal />
