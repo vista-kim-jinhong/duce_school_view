@@ -28,101 +28,6 @@ import AppLoading from "@/components/ui/AppLoading/AppLoading";
 import type { GetFileSasUrlResult } from "@/lib/api/usecase/getFileApi";
 import Image from "next/image";
 
-// -------------------------------------------------
-// 内部コンポーネント
-// -------------------------------------------------
-
-/** 読み取り専用フィールド */
-function ReadonlyField({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | null | undefined;
-}) {
-  return (
-    <div className="flex items-start gap-2">
-      <span className="w-36 shrink-0 text-sm font-medium text-gray-500">
-        {label}
-      </span>
-      <span className="flex-1 text-sm text-gray-800">{value ?? "―"}</span>
-    </div>
-  );
-}
-
-/** 読み取り専用テキストエリア */
-function ReadonlyTextarea({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | null | undefined;
-}) {
-  return (
-    <div className="flex items-start gap-2">
-      <span className="w-36 shrink-0 text-sm font-medium text-gray-500">
-        {label}
-      </span>
-      <span className="flex-1 text-sm text-gray-800 whitespace-pre-wrap">
-        {value ?? "―"}
-      </span>
-    </div>
-  );
-}
-
-/** 添付ファイル表示 */
-function FileLinks({ files }: { files: GetFileSasUrlResult[] }) {
-  if (files.length === 0)
-    return <span className="text-sm text-gray-400">―</span>;
-
-  return (
-    <div className="flex flex-col gap-1">
-      {files.map((file) => (
-        <a
-          key={file.fileKey}
-          href={file.sasUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 hover:underline"
-        >
-          {file.contentType.includes("image") ? (
-            // 画像はサムネイル表示
-            <Image
-              src={file.sasUrl}
-              alt={file.name}
-              width={320}
-              height={160}
-              className="rounded border border-gray-200 object-contain"
-            />
-          ) : (
-            <>
-              <PaperClipIcon className="h-4 w-4 shrink-0" />
-              {file.name}
-            </>
-          )}
-        </a>
-      ))}
-    </div>
-  );
-}
-
-/** セクション区切り */
-function SectionDivider({ title }: { title: string }) {
-  return (
-    <div className="flex items-center gap-2 my-2">
-      <hr className="flex-1 border-gray-200" />
-      <span className="text-xs font-medium text-gray-400 whitespace-nowrap">
-        {title}
-      </span>
-      <hr className="flex-1 border-gray-200" />
-    </div>
-  );
-}
-
-// -------------------------------------------------
-// メインコンポーネント
-// -------------------------------------------------
-
 export interface DetailModalProps {
   /** 詳細を表示する案件ID (外部から渡す) */
   ankenId: string | null;
@@ -251,7 +156,7 @@ export default function DetailModal({ ankenId }: DetailModalProps) {
             : "opacity-0 scale-95 pointer-events-none",
         ].join(" ")}
       >
-        <div className="w-full max-w-3xl rounded-xl bg-white shadow-2xl flex flex-col max-h-[90vh]">
+        <div className="w-full max-w-5xl rounded-xl bg-white shadow-2xl flex flex-col max-h-[90vh]">
           {/* ヘッダー */}
           <div
             className={[
@@ -453,9 +358,9 @@ export default function DetailModal({ ankenId }: DetailModalProps) {
           </div>
 
           {/* フッター */}
-          <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 shrink-0 flex-wrap gap-2">
-            {/* 左側ボタン */}
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col gap-2 px-6 py-4 border-t border-gray-200 shrink-0">
+            {/* 上段: メモ編集(左) + アクションボタン(右) */}
+            <div className="flex items-center justify-between gap-3">
               <AppButton
                 variant="secondary"
                 size="md"
@@ -464,54 +369,51 @@ export default function DetailModal({ ankenId }: DetailModalProps) {
               >
                 お客様用メモを編集する
               </AppButton>
+
+              <div className="flex items-center gap-2">
+                {modalData?.isOrderStatus && (
+                  <AppButton
+                    variant="danger"
+                    size="md"
+                    onClick={() =>
+                      console.log("発注:", modalData.anken.$id.value)
+                    }
+                  >
+                    発注手続きへ
+                  </AppButton>
+                )}
+                {modalData?.isConfirmStatus && (
+                  <AppButton
+                    variant="primary"
+                    size="md"
+                    onClick={handleOpenConfirm}
+                  >
+                    完了を確認
+                  </AppButton>
+                )}
+                {modalData?.isClaimStatus && (
+                  <AppButton
+                    variant="secondary"
+                    size="md"
+                    onClick={handleOpenClaim}
+                  >
+                    完了してない
+                  </AppButton>
+                )}
+                {modalData?.actionItems && modalData.actionItems.length > 0 && (
+                  <AppButton
+                    variant="secondary"
+                    size="md"
+                    onClick={handleOpenInquiry}
+                  >
+                    お問い合わせ
+                  </AppButton>
+                )}
+              </div>
             </div>
 
-            {/* 右側ボタン */}
-            <div className="flex items-center gap-2 flex-wrap">
-              {/* 発注手続きへ */}
-              {modalData?.isOrderStatus && (
-                <AppButton
-                  variant="danger"
-                  size="md"
-                  onClick={() => {
-                    // TODO: 発注モーダルを開く
-                    console.log("発注:", modalData.anken.$id.value);
-                  }}
-                >
-                  発注手続きへ
-                </AppButton>
-              )}
-
-              {/* 完了を確認 */}
-              {modalData?.isConfirmStatus && (
-                <AppButton
-                  variant="primary"
-                  size="md"
-                  onClick={handleOpenConfirm}
-                >
-                  完了を確認
-                </AppButton>
-              )}
-
-              {/* 完了してない (未完了連絡) */}
-              {modalData?.isClaimStatus && (
-                <AppButton variant="danger" size="md" onClick={handleOpenClaim}>
-                  完了してない
-                </AppButton>
-              )}
-
-              {/* お問い合わせ */}
-              {modalData?.actionItems && modalData.actionItems.length > 0 && (
-                <AppButton
-                  variant="secondary"
-                  size="md"
-                  onClick={handleOpenInquiry}
-                >
-                  お問い合わせ
-                </AppButton>
-              )}
-
-              {/* 閉じる */}
+            {/* 下段: 閉じる (右寄せ) */}
+            <div className="flex justify-end">
               <AppButton variant="primary" size="md" onClick={closeModal}>
                 閉じる
               </AppButton>
@@ -520,5 +422,94 @@ export default function DetailModal({ ankenId }: DetailModalProps) {
         </div>
       </div>
     </>
+  );
+}
+
+/** 読み取り専用フィールド */
+function ReadonlyField({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | null | undefined;
+}) {
+  return (
+    <div className="flex items-start gap-2">
+      <span className="w-44 shrink-0 text-sm font-medium text-gray-500">
+        {label}
+      </span>
+      <span className="flex-1 text-sm text-gray-800 whitespace-pre-wrap bg-gray-50 rounded-md px-3 py-2">
+        {value ?? "―"}
+      </span>
+    </div>
+  );
+}
+
+/** 読み取り専用テキストエリア */
+function ReadonlyTextarea({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | null | undefined;
+}) {
+  return (
+    <div className="flex items-start gap-2">
+      <span className="w-44 shrink-0 text-sm font-medium text-gray-500">
+        {label}
+      </span>
+      <span className="flex-1 text-sm text-gray-800 whitespace-pre-wrap bg-gray-50 rounded-md px-3 py-2">
+        {value ?? "―"}
+      </span>
+    </div>
+  );
+}
+
+/** 添付ファイル表示 */
+function FileLinks({ files }: { files: GetFileSasUrlResult[] }) {
+  if (files.length === 0)
+    return <span className="text-sm text-gray-400">―</span>;
+
+  return (
+    <div className="flex flex-col gap-1">
+      {files.map((file) => (
+        <a
+          key={file.fileKey}
+          href={file.sasUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 hover:underline"
+        >
+          {file.contentType.includes("image") ? (
+            // 画像はサムネイル表示
+            <Image
+              src={file.sasUrl}
+              alt={file.name}
+              width={320}
+              height={160}
+              className="rounded border border-gray-200 object-contain"
+            />
+          ) : (
+            <>
+              <PaperClipIcon className="h-4 w-4 shrink-0" />
+              {file.name}
+            </>
+          )}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+/** セクション区切り */
+function SectionDivider({ title }: { title: string }) {
+  return (
+    <div className="flex items-center gap-2 my-2">
+      <hr className="flex-1 border-gray-200" />
+      <span className="text-xs font-medium text-gray-400 whitespace-nowrap">
+        {title}
+      </span>
+      <hr className="flex-1 border-gray-200" />
+    </div>
   );
 }
