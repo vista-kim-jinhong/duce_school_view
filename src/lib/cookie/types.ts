@@ -15,5 +15,4 @@ export interface SessionPayload {
   loginId: string;
   /** 学校名または会社名 */
   schoolOrCompanyName: string;
-  /** TODO.. */
 }
