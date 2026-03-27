@@ -1,11 +1,9 @@
 "use client";
 
 import { useAtom, useAtomValue } from "jotai";
-import { useRouter } from "next/navigation";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import { isLoginAtom, userInfoAtom, isLoadingAtom } from "../store/globalAtoms";
 import { logoutAction } from "./_actions/logoutAction";
-import { PATH } from "@/lib/constants/path";
 import AppLoading from "@/components/ui/AppLoading/AppLoading";
 import Image from "next/image";
 
@@ -15,7 +13,6 @@ import Image from "next/image";
  * @returns JSX.Element
  */
 export default function LayoutHeader() {
-  const router = useRouter();
   const [, setUserInfo] = useAtom(userInfoAtom);
   const isLogin = useAtomValue(isLoginAtom);
   const userInfo = useAtomValue(userInfoAtom);
@@ -27,7 +24,7 @@ export default function LayoutHeader() {
     setIsLoading(true);
     await logoutAction();
     setUserInfo(null);
-    router.push(PATH.LOGIN);
+    // middlewareで検証しログイン画面にリダイレクトしているので認証情報のみクリア
   };
 
   return (
