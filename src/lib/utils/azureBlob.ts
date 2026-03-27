@@ -45,7 +45,7 @@ function getContainerName(): string {
   const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME;
   if (!containerName) {
     throw new Error(
-      "[azureBlob] AZURE_STORAGE_CONTAINER_NAME が設定されていません",
+      "[azureBlob] AZURE_STORAGE_CONTAINER_NAMEが設定されていません",
     );
   }
   return containerName;
@@ -55,7 +55,13 @@ function getContainerName(): string {
  * キャッシュプレフィックスを取得する
  */
 function getCachePrefix(): string {
-  return process.env.AZURE_STORAGE_CACHE_PREFIX ?? "school-view/cache";
+  const storageCachePrefixPath = process.env.AZURE_STORAGE_CACHE_PREFIX;
+  if (!storageCachePrefixPath) {
+    throw new Error(
+      "[azureBlob] AZURE_STORAGE_CACHE_PREFIXが設定されていません",
+    );
+  }
+  return storageCachePrefixPath;
 }
 
 /**

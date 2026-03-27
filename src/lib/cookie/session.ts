@@ -8,10 +8,6 @@ import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import type { SessionPayload } from "./types";
 
-// =================================================
-// 定数
-// =================================================
-
 export const COOKIE_KEYS = {
   SESSION: "dsv_session",
 } as const;
